@@ -1,10 +1,15 @@
 package model.units;
 
-public class Corn {
+import java.awt.*;
+
+import static java.lang.Math.random;
+
+public class Corn extends Units{
     private int maturity;
     private boolean crowOnTop;
 
     public Corn() {
+        super((int) (random() * 100), (int) (random() * 100));// Randomly generate the position of the corn
         this.maturity = 0;
         this.crowOnTop = false;
     }
@@ -18,7 +23,7 @@ public class Corn {
 
     public void checkCrow() {
         if (crowOnTop) {
-            this.maturity = 0;
+            this.maturity = this.maturity - 10;// The crow eats the corn little by little
         }
     }
 

@@ -1,10 +1,8 @@
 package model;
 
-public class Movement extends Thread{
+import model.units.Farmer;
 
-    @Override
-    public void run() {
-        System.out.println("Unit is moving");
-    }
+public class Movement {
+    private Farmer farmer;
 
 }

@@ -1,14 +1,12 @@
 package model.units;
 
+import java.awt.*;
+
 public class Scarecrow extends Units{
-    private int x, y;
+
 
     public Scarecrow(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
     }
 
-    public void setPosition(int x, int y) {
-        // Set the position of the scarecrow
-    }
 }
