@@ -49,13 +49,18 @@ public class GamePanel extends JPanel {
         Point pos = farmer.getPosition();
         g.setColor(farmer.isSelected() ? Color.GREEN : Color.RED);
         g.fillOval(pos.x - 10, pos.y - 10, 20, 20); // represent the farmer as a circle
+        int destiX=farmer.getDestination().x;
+        int destiY=farmer.getDestination().y;
+        g.setColor(Color.BLUE);
+        g.fillOval(destiX-5, destiY-5, 10, 10); // represent the farmer as a circle
         MouseLis mouseListener = new MouseLis(farmer);
         // if the farmer has a destination, draw a line to it
         if (farmer.getDestination() != null) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setColor(Color.GREEN);
+            //draw a line from the farmer to the destination
             g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{5.0f}, 0.0f));
-            g2d.drawLine(pos.x, pos.y, farmer.getDestination().x, farmer.getDestination().y);
+            g2d.drawLine(pos.x, pos.y, destiX, destiY);
             g2d.dispose();
         }
         //draw the corns
