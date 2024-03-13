@@ -5,8 +5,8 @@ import java.awt.Point;
 public class Units {
     protected Point position; //units position
 
-    public Units(int x, int y) {
-        this.position = new Point(x, y);
+    public Units (Point position){
+        this.position = position;
     }
 
     public Point getPosition() {

@@ -2,6 +2,7 @@ package control;
 
 import model.Movement;
 import model.units.Farmer;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Point;
@@ -10,7 +11,7 @@ import javax.swing.SwingUtilities;
 public class MouseLis implements MouseListener {
     private Farmer farmer;
     private Thread movementThread; //start a new thread for the movement of the farmer
-    private final int SELECTION_RADIUS = 20;    //the radius of the selection circle
+    private final int SELECTION_RADIUS =40 ;    //the radius of the selection circle
 
     public MouseLis(Farmer farmer) {
         this.farmer = farmer;
@@ -41,14 +42,18 @@ public class MouseLis implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 }

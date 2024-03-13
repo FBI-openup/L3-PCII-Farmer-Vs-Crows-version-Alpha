@@ -4,10 +4,11 @@ import java.awt.Point;
 
 public abstract class MovingUnits extends Units {
     protected Point destination; //the place where the unit is moving to ,given by right click
-
-    public MovingUnits(int x, int y) {
-        super(x, y);
-        this.destination = new Point(x, y); //default destination is the current position
+    protected double speed ;
+    public MovingUnits(Point position) {
+        super(position);
+        this.destination = position; //default destination is the current position
+        this.speed =0;
     }
 
     public Point getDestination() {

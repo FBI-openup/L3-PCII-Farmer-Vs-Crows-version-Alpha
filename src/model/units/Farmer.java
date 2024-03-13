@@ -3,47 +3,46 @@ package model.units;
 import java.awt.Point;
 import javax.swing.Timer;
 
-public class Farmer extends MovingUnits{
-    private boolean isSelected = false; // 用于标记农夫是否被选中
+public class Farmer extends MovingUnits {
+    private boolean isSelected = false; //check if the unit is selected
     private Timer moveTimer; //used to control the movement of the farmer
 
     public Farmer() {
-        super(200, 200); //initialize the position of the farmer
-
-        // 初始化计时器，控制农夫的移动
+        super(new Point(200, 200));
+        //initialize the timer
         moveTimer = new Timer(10, e -> move());
         moveTimer.start();
     }
 
     //the method to move the unit to the destination
     @Override
-     public void move() {
+    public void move() {
         //set a speed for the farmers movement
-        int speed = 5;
+        speed = 5;
 
-        // 计算目的地和当前位置之间的差值
+        //calculate the direction to the destination
         int dx = destination.x - position.x;
         int dy = destination.y - position.y;
 
-        // 计算到目的地的直线距离
+        // calculate the distance to the destination
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-        // 如果距离小于或等于速度，直接设置位置为目的地，避免超过目的地
+        // if the distance is less than the speed, the farmer has reached the destination
         if (distance <= speed) {
             System.out.println("Farmer reached destination");
             position.setLocation(destination);
             return;
         }
 
-        // 计算单位向量（即方向向量，长度为1）
+        // calculate the unit vector of the direction
         double unitX = dx / distance;
         double unitY = dy / distance;
 
-        // 计算本次移动的实际向量（方向向量 * 速度）
+        // calculate the movement for this frame
         int moveX = (int) (unitX * speed);
         int moveY = (int) (unitY * speed);
 
-        // 更新位置
+        // update the position each time
         position.translate(moveX, moveY);
         System.out.println("Farmer moving to " + position);
     }
@@ -77,6 +76,7 @@ public class Farmer extends MovingUnits{
     public boolean isClickWithinCircle(Point clickPoint, int radius) {
         return clickPoint.distance(position) <= radius;
     }
+
     public void startMoveTimer() {
         if (moveTimer != null && !moveTimer.isRunning()) {
             moveTimer.start();

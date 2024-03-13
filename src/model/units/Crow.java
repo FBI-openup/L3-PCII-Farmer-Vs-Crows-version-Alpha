@@ -3,8 +3,7 @@ package model.units;
 public class Crow {
     private Corn corn;
 
-    public Crow(Corn corn) {
-        this.corn = corn;
+    public Crow() {
     }
 
     public void tryToEatCorn() {
