@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 # Default ignored files
 /shelf/
 /workspace.xml
 # Editor-based HTTP Client requests
+=======
+# 默认忽略的文件
+/shelf/
+/workspace.xml
+# 基于编辑器的 HTTP 客户端请求
+>>>>>>> efd3729 (first)
 /httpRequests/
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+<<<<<<< HEAD
 # GitHub Copilot persisted chat sessions
 /copilot/chatSessions
+=======
+>>>>>>> efd3729 (first)

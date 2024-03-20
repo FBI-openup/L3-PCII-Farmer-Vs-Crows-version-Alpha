@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/champ mais.iml" filepath="$PROJECT_DIR$/champ mais.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/Downloads.iml" filepath="$PROJECT_DIR$/Downloads.iml" />
+>>>>>>> efd3729 (first)
     </modules>
   </component>
 </project>
