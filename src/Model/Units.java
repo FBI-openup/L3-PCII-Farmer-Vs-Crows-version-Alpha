@@ -1,7 +1,5 @@
 package Model;
 
-
-import javax.swing.text.Position;
 import java.awt.Point;
 
 public class Units {
