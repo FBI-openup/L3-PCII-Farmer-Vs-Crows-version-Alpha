@@ -47,7 +47,7 @@ public class Main {
         CrowMovement gameThread = new CrowMovement(gamePanel, gameEngine);
         CrowThread crowThread = new CrowThread(gameEngine);
         gameThread.start();
-        //crowThread.start();
+        crowThread.start();
 
 
         window.pack();
