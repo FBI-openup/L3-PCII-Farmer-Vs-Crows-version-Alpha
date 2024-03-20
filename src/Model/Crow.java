@@ -310,7 +310,7 @@ public class Crow extends MovingUnits {
             System.out.println("positionx " + position.x + " positiony " + position.y); // DEBUG
             remainingTime--;
         }
-        if (position.distance(destination) < 16) {
+        if (position.distance(destination) <= 16) {
             eatCorn(c);
         }
     }
@@ -477,7 +477,7 @@ public class Crow extends MovingUnits {
     // Method to eat corn
     public void eatCorn(Corn nearestCorn) {
         // Eat the corn
-        if (position.distance(nearestCorn.getPosition()) < 16) {
+        if (position.distance(nearestCorn.getPosition()) <= 20) {
             eatingTime++;
             if (eatingTime >= 200) {
                 gameEngine.removeUnit(nearestCorn);
