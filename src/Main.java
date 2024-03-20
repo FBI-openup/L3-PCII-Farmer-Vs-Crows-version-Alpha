@@ -1,14 +1,16 @@
-import model.GameFrame;
+import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 
 public class Main {
     public static void main(String[] args) {
-
-        //Schedule a job for the event-dispatching thread:
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new GameFrame(); //create and show the GUI
+                new GameInterface();
             }
-        }
-        );
+        });
     }
 }
