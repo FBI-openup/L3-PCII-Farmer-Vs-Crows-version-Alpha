@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Crow extends MovingUnits {
     // Crow properties
-    private final int safetyDistance = 16 * 3;
+    private final int safetyDistance = 16 * 3 * 3;
     private boolean isScared = false;
     private int remainingTime = 6000;
     private int eatingTime;
@@ -30,7 +30,6 @@ public class Crow extends MovingUnits {
                 nearestCorn = corn;
             }
         }
-        System.out.println("NEAREST CORN " + nearestCorn.getPosition().getLocation()); //
         return nearestCorn;
     }
 
@@ -140,6 +139,8 @@ public class Crow extends MovingUnits {
         }
     }*/
 
+
+    /*
     public synchronized void goLookForCorn(Corn c) {
         System.out.println("-- GO LOOK FOR CORN --"); //
         // Move towards the nearest corn
@@ -167,7 +168,6 @@ public class Crow extends MovingUnits {
         int moveY = (int) (dy * speed);
         System.out.println("moveX " + moveX + " moveY " + moveY); // DEBUG
 
-
         // Update the crow's position
         if (position.distance(destination) > 16) {
             position.x += moveX;
@@ -180,7 +180,7 @@ public class Crow extends MovingUnits {
         }
     }
 
-    /*
+
     public void flee(Units threat) {
         System.out.println("-- FLEE --"); //
         Point threatPosition = threat.getPosition();
@@ -226,7 +226,7 @@ public class Crow extends MovingUnits {
             }
         }
     }
-*/
+
     public synchronized void flee(Units threat) {
         System.out.println("-- FLEE --"); //
         Point threatPosition = threat.getPosition();
@@ -269,6 +269,8 @@ public class Crow extends MovingUnits {
             while (Math.abs(dy * speed) < 1) {
                 dy *= 2;
             }
+            System.out.println("dx " + dx + " dy " + dy); // DEBUG
+
             int moveX = (int) (dx * speed);
             int moveY = (int) (dy * speed);
             System.out.println("moveX " + moveX + " moveY " + moveY); // DEBUG
@@ -282,6 +284,83 @@ public class Crow extends MovingUnits {
             } else {
                 position.x = destination.x;
                 position.y = destination.y;
+            }
+        }
+    }
+    */
+
+
+    public void goLookForCorn(Corn c) {
+        System.out.println("-- GO LOOK FOR CORN --"); //
+        // Move towards the nearest corn
+        this.destination = c.getPosition();
+        // Calculate the direction vector
+        double dx = destination.x - position.x;
+        double dy = destination.y - position.y;
+        // Normalize the direction vector
+        speed = 1/Math.sqrt(dx * dx + dy * dy);
+        dx *= speed * 2;
+        dy *= speed * 2;
+        System.out.println("dx " + dx + " dy " + dy); // DEBUG
+        System.out.println("CORN POSITION " + c.getPosition()); // DEBUG
+        // Update the crow's position
+        if (position.distance(destination) > 16) {
+            position.x += dx;
+            position.y += dy;
+            System.out.println("positionx " + position.x + " positiony " + position.y); // DEBUG
+            remainingTime--;
+        }
+        if (position.distance(destination) < 16) {
+            eatCorn(c);
+        }
+    }
+
+    public void flee(Units threat) {
+        System.out.println("-- FLEE --"); //
+        destination = threat.getPosition();
+        // Define the corners
+        Point[] corners = new Point[] {
+                new Point(0, 0),
+                new Point(0, 576),
+                new Point(768, 0),
+                new Point(768, 576)
+        };
+
+        // Find the corner that is furthest from the threat but still within a reachable distance from the crow
+        Point bestCorner = null;
+        double bestDistance = Double.NEGATIVE_INFINITY;
+        for (Point corner : corners) {
+            double crowToCornerDistance = position.distance(corner);
+            double threatToCornerDistance = destination.distance(corner);
+            if (threatToCornerDistance > bestDistance && crowToCornerDistance < threatToCornerDistance) {
+                bestCorner = corner;
+                bestDistance = threatToCornerDistance;
+            }
+        }
+
+        // If a suitable corner was found, move towards it
+        if (bestCorner != null) {
+            destination = bestCorner;
+            // Calculate the direction vector
+            double dx = destination.x - position.x;
+            double dy = destination.y - position.y;
+            // Normalize the direction vector
+            speed = 1/Math.sqrt(dx * dx + dy * dy);
+            dx *= speed * 1.5;
+            dy *= speed * 1.5;
+            // Update the crow's position
+            if (position.distance(destination) > speed) {
+                position.x += dx;
+                position.y += dy;
+                remainingTime--;
+            }
+
+            //if (position.x <= 0 || position.x >= 768 || position.y <= 0 || position.y >= 576) {
+            if (Math.abs(position.x - destination.x) < 8 && Math.abs(position.y - destination.y) < 8) {
+                /*
+                position.x = destination.x;
+                position.y = destination.y;*/
+                gameEngine.removeUnit(this);
             }
         }
     }
@@ -322,10 +401,10 @@ public class Crow extends MovingUnits {
 
         // Si la valeur absolue de dx * speed est plus petite que 1 alors on multiplie par 2
         while (Math.abs(dx * speed) < 1) {
-            dx *= speed * 4;
+            dx *= speed * 2;
         }
         while (Math.abs(dy * speed) < 1) {
-            dy *= speed * 4;
+            dy *= speed * 2;
         }
         System.out.println("dx " + dx + " dy " + dy); // DEBUG
 
@@ -333,17 +412,19 @@ public class Crow extends MovingUnits {
         int moveY = (int) (dy * speed);
 
         // Update the crow's position
-        if (position.distance(nearestCorner) > 0) {
+        if (position.distance(nearestCorner) > 8) {
             position.x += moveX;
             position.y += moveY;
         }
         else {
+            System.out.println("REMOVE"); //
             gameEngine.removeUnit(this);
         }
 
 //        if (position.x < -16*3 || position.x >= 768 || position.y < -16*3 || position.y >= 576) {
 //            gameEngine.removeUnit(this);
     }
+
 
     // Method to move the crow
     @Override
@@ -355,15 +436,11 @@ public class Crow extends MovingUnits {
         if (nearestCorn == null) {
             if ((!isScared() || remainingTime <= 0)) {
                 System.out.println("LEAVE"); //
-                /*System.out.println("isScared" + isScared);
-                System.out.println("remainingTime" + remainingTime);
-                System.out.println("runningForMyLife" + isScared);*/
                 leave(destination);
             }
             else {
                 // Move away from the nearest threat
-                Units threat = locateThreat();
-                flee(threat);
+                flee(locateThreat());
             }
         }
         // If the crow finds corn, it will go look for it or flee if it's scared or leave
@@ -373,17 +450,12 @@ public class Crow extends MovingUnits {
             }
             else if (isScared()) {
                 // Move away from the nearest threat
-                Units threat = locateThreat();
-                flee(threat);
+                flee(locateThreat());
             }
             else {
                 System.out.println("LEAVE 2"); //
-                /*System.out.println("isScared" + isScared);
-                System.out.println("remainingTime" + remainingTime);
-                System.out.println("runningForMyLife" + isScared);*/
                 leave(destination);
             }
-
         }
     }
 
@@ -392,15 +464,13 @@ public class Crow extends MovingUnits {
         // If the farmer or the nearest scarecrow are within a certain distance of the crow, the crow is scared
         Farmer farmer = locateFarmer();
         Scarecrow scarecrow = locateScarecrow();
-        /**/
         if (!isScared) {
-            /**/
             // If there are no scarecrows, the crow is scared if the farmer is within a certain distance
             if (scarecrow == null) {
                 isScared = position.distance(farmer.getPosition()) < safetyDistance;
             } else {
                 // If the farmer or the nearest scarecrow are not within a certain distance of the crow, the crow is not scared
-                isScared = position.distance(farmer.getPosition()) < 2 * safetyDistance || position.distance(scarecrow.getPosition()) < safetyDistance && scarecrow.getEfficiencyTime() > 0;
+                isScared = position.distance(farmer.getPosition()) < safetyDistance || position.distance(scarecrow.getPosition()) < safetyDistance && scarecrow.getEfficiencyTime() > 0;
             }
         }
     }

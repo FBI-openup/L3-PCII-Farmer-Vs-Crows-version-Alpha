@@ -46,7 +46,7 @@ public class GamePanel extends JPanel {
                 g2d.setColor(Color.GRAY); // Set color for Scarecrow
             }
             Point position = unit.getPosition();
-            g2d.fillRect(position.x, position.y, tileSize, tileSize);
+            g2d.fillRect(position.x - 24, position.y - 24, tileSize, tileSize);
         }
         g2d.dispose();
     }

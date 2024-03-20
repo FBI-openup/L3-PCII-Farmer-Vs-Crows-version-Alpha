@@ -22,7 +22,7 @@ public class Main {
 
         Crow crow = new Crow(new Point(300, 300), gameEngine);
         gameEngine.addUnit(crow);
-        Crow crow2 = new Crow(new Point(400, 100), gameEngine);
+        Crow crow2 = new Crow(new Point(50, 450), gameEngine);
         gameEngine.addUnit(crow2);
 
         Corn corn = new Corn(new Point(150, 200), gameEngine);
@@ -47,7 +47,7 @@ public class Main {
         CrowMovement gameThread = new CrowMovement(gamePanel, gameEngine);
         CrowThread crowThread = new CrowThread(gameEngine);
         gameThread.start();
-        crowThread.start();
+        //crowThread.start();
 
 
         window.pack();

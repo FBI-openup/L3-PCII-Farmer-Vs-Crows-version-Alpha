@@ -87,6 +87,7 @@ public class CrowMovement extends Thread {
                     e.printStackTrace();
                 }
             });
+            System.out.println(crow.getPosition());
         }
     }
 
