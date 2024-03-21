@@ -40,7 +40,7 @@ public class GamePanel extends JPanel {
             farmerImage = ImageIO.read(new File("images/farmer.png").getAbsoluteFile());
             crowImage = ImageIO.read(new File("images/crow.png").getAbsoluteFile());
             cornImage = ImageIO.read(new File("images/corn.png").getAbsoluteFile());
-            scarecrowImage = ImageIO.read(new File("images/scarecrow.png").getAbsoluteFile());
+            scarecrowImage = ImageIO.read(new File("images/scarecrow2.png").getAbsoluteFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,28 +51,28 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+        // Draw the units
         for (Units unit : gameEngine.getUnits()) {
             BufferedImage currentImage = null;
             Point position = unit.getPosition();
             if (unit instanceof Farmer) {
                 currentImage = farmerImage;
-                g2d.drawImage(currentImage, position.x, position.y, tileSize * 2, tileSize * 2, null);
+                g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
             } else if (unit instanceof Crow) {
                 currentImage = crowImage;
-                g2d.drawImage(currentImage, position.x, position.y, tileSize, tileSize, null);
+                g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
                 // Draw a circle representing the safety distance of the crow centered at the crow's position
                 g2d.drawOval(unit.getPosition().x - ((Crow) unit).getSafetyDistance(), unit.getPosition().y - ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance() * 2, ((Crow) unit).getSafetyDistance() * 2);
             } else if (unit instanceof Corn) {
                 currentImage = cornImage;
-                g2d.drawImage(currentImage, position.x, position.y , tileSize, tileSize, null);
+                g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
             } else if (unit instanceof Scarecrow) {
                 currentImage = scarecrowImage;
-                g2d.drawImage(currentImage, position.x, position.y, tileSize, tileSize, null);
+                g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
             }
-            //g2d.fillOval(position.x - 24, position.y - 24, tileSize, tileSize);
-
         }
         g2d.dispose();
     }
 }
+
+
