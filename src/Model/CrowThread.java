@@ -2,6 +2,7 @@ package Model;
 
 import View.GamePanel;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,7 +26,7 @@ public class CrowThread extends Thread {
                     gameEngine.generateCrow();
                 }
             }
-        }, 0, 6000);
+        }, 5000, new Random().nextInt(10000) + 15000);
     }
 
     public void stopThread() {
