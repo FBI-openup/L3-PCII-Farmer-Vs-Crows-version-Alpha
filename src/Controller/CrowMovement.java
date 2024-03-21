@@ -47,30 +47,7 @@ public class CrowMovement extends Thread {
         executorService.shutdown();
     }
 
-/*
-    private void updateCrow() {
-        List<Crow> crows = gameEngine.getCrows();
-        int i = 0;
-        for (Crow crow : crows) {
-            new Thread(() -> {
-                try {
-                    Corn corn = crow.locateCorn();
-                    if (corn != null) {
-                        crow.move(corn.getPosition());
-                    } else {
-                        crow.move(null);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            i++;
-        }
-    }
-  */
-// ...
-
-    private final ExecutorService executorService = Executors.newFixedThreadPool(5); // 10 threads in the pool
+    private final ExecutorService executorService = Executors.newFixedThreadPool(5); // 5 threads in the pool
 
     private void updateCrow() {
         List<Crow> crows = gameEngine.getCrows();
@@ -86,30 +63,29 @@ public class CrowMovement extends Thread {
         }
     }
 
-
-//    private void updateCrow() {
-//        List<Crow> crows = gameEngine.getCrows();
-//        int i = 0;
-//        for (Crow crow : crows) {
-//            new Thread(() -> {
-//                try {
-//                    Corn corn = crow.locateCorn();
-//                    if (corn != null) {
-//                        crow.move(corn.getPosition());
-//                    } else {
-//                        crow.move(null);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }).start();
-//            i++;
-//        }
-//    }
+    /*
+    private void updateCrow() {
+        List<Crow> crows = gameEngine.getCrows();
+        int i = 0;
+        for (Crow crow : crows) {
+            new Thread(() -> {
+                try {
+                       crow.move(corn.getPosition());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            i++;
+        }
+    }
+  */
 
     // DRAW : draw the game panel
     private void renderGame() {
         gamePanel.revalidate();
         gamePanel.repaint();
     }
+
+
 }
+
