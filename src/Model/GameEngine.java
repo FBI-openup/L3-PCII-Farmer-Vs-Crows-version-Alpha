@@ -70,10 +70,7 @@ public class GameEngine {
         return scarecrows;
     }
 
-    public Crow generateCrow() {
-        if (getCrows().size() >= 3) {
-            return null;
-        }
+    public void generateCrow() {
         Point[] corners = new Point[] {
                 new Point(0, 0),
                 new Point(0, 576),
@@ -83,6 +80,6 @@ public class GameEngine {
         Point position = corners[(int) (Math.random() * 4)];
         Crow crow = new Crow(position, this);
         this.addUnit(crow);
-        return crow;
     }
+
 }

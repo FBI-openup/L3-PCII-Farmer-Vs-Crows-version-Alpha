@@ -21,7 +21,7 @@ public class Crow extends MovingUnits {
     }
 
     // Method to locate corn
-    public synchronized Corn locateCorn() {
+    public Corn locateCorn() {
         // Find the nearest corn
         List<Corn> corns = gameEngine.getCorns();
         if (corns.isEmpty()) {
@@ -180,6 +180,8 @@ public class Crow extends MovingUnits {
         }
     }
 
+
+
     // Method to move the crow
     @Override
     public void move() {
@@ -236,6 +238,7 @@ public class Crow extends MovingUnits {
             //chewingSound.stop();
         }
     }
+
 
     public void playChewingSound() {
         try {
