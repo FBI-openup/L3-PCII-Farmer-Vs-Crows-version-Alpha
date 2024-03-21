@@ -27,7 +27,7 @@ public class Fleeing {
 
         GamePanel gamePanel = new GamePanel(gameEngine);
         window.add(gamePanel);
-        CrowMovement gameThread = new CrowMovement(gamePanel, gameEngine);
+        CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
         gameThread.start();
 
         window.pack();

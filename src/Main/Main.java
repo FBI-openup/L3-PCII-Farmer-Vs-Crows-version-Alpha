@@ -30,8 +30,8 @@ public class Main {
         gameEngine.addUnit(corn);
         Corn corn3 = new Corn(new Point(500, 200), gameEngine);
         gameEngine.addUnit(corn3);
-        Corn corn4 = new Corn(new Point(350, 400), gameEngine);
-        gameEngine.addUnit(corn4);
+        /*Corn corn4 = new Corn(new Point(350, 400), gameEngine);
+        gameEngine.addUnit(corn4);*/
         Corn corn5 = new Corn(new Point(700, 200), gameEngine);
         gameEngine.addUnit(corn5);
         Corn corn6 = new Corn(new Point(800, 400), gameEngine);
@@ -43,8 +43,8 @@ public class Main {
 
         GamePanel gamePanel = new GamePanel(gameEngine);
         window.add(gamePanel);
-        CrowMovement gameThread = new CrowMovement(gamePanel, gameEngine);
-        CrowThread crowThread = new CrowThread(gameEngine);
+        CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
+        CrowGenerationThread crowThread = new CrowGenerationThread(gameEngine);
         gameThread.start();
         crowThread.start();
 
