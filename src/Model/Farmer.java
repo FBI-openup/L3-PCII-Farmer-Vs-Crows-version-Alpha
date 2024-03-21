@@ -10,6 +10,6 @@ public class Farmer extends MovingUnits {
     }
 
     @Override
-    public void move(Point destination) {
+    public void move() {
     }
 }

@@ -11,6 +11,6 @@ public abstract class MovingUnits extends Units {
         this.speed = 0;
         this.destination = position;
     }
-    public abstract void move(Point destination);
+    public abstract void move();
 
 }

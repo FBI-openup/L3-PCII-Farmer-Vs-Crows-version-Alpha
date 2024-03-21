@@ -20,18 +20,17 @@ public class Main {
         Farmer farmer = new Farmer(new Point(300, 400), gameEngine);
         gameEngine.addUnit(farmer);
 
+        /*
         Crow crow = new Crow(new Point(300, 300), gameEngine);
         gameEngine.addUnit(crow);
         Crow crow2 = new Crow(new Point(50, 450), gameEngine);
-        gameEngine.addUnit(crow2);
+        gameEngine.addUnit(crow2);*/
 
         Corn corn = new Corn(new Point(150, 200), gameEngine);
         gameEngine.addUnit(corn);
-        Corn corn2 = new Corn(new Point(350, 400), gameEngine);
-        gameEngine.addUnit(corn2);
         Corn corn3 = new Corn(new Point(500, 200), gameEngine);
         gameEngine.addUnit(corn3);
-        Corn corn4 = new Corn(new Point(600, 400), gameEngine);
+        Corn corn4 = new Corn(new Point(350, 400), gameEngine);
         gameEngine.addUnit(corn4);
         Corn corn5 = new Corn(new Point(700, 200), gameEngine);
         gameEngine.addUnit(corn5);

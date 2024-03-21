@@ -77,12 +77,7 @@ public class CrowMovement extends Thread {
         for (Crow crow : crows) {
             executorService.submit(() -> {
                 try {
-                    Corn corn = crow.locateCorn();
-                    if (corn != null) {
-                        crow.move(corn.getPosition());
-                    } else {
-                        crow.move(null);
-                    }
+                    crow.move();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
