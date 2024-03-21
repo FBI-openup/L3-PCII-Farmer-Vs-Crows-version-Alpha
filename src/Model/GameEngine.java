@@ -85,14 +85,4 @@ public class GameEngine {
         this.addUnit(crow);
         return crow;
     }
-
-    // Update the game state
-//    public void update() {
-//        for (Units unit : units) {
-//            if (unit instanceof MovingUnits) {
-//                ((MovingUnits) unit).move();
-//            }
-//        }
-//    }
-
 }
