@@ -54,7 +54,6 @@ public class GamePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         for (Units unit : gameEngine.getUnits()) {
-            System.out.println(unit);
             BufferedImage currentImage = null;
             Point position = unit.getPosition();
             if (unit instanceof Farmer) {
