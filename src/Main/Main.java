@@ -30,18 +30,20 @@ public class Main {
         Corn corn6 = new Corn(new Point(800, 400), gameEngine);
         gameEngine.addUnit(corn6);*/
 
-        Scarecrow scarecrow = new Scarecrow(new Point(150, 500), gameEngine);
+        Scarecrow scarecrow = new Scarecrow(new Point(200, 450), gameEngine);
         gameEngine.addUnit(scarecrow);
 
         GamePanel gamePanel = new GamePanel(gameEngine);
         window.add(gamePanel);
         CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
+        GamePanelThread gamePanelThread = new GamePanelThread(gamePanel, gameEngine);
         CrowGenerationThread crowThread = new CrowGenerationThread(gameEngine);
         CornGenerationThread cornThread = new CornGenerationThread(gameEngine);
+
         gameThread.start();
+        gamePanelThread.start();
         crowThread.start();
         cornThread.start();
-
 
         window.pack();
 

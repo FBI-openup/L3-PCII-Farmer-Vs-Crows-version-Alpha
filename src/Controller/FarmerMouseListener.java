@@ -9,9 +9,9 @@ import javax.swing.SwingUtilities;
 
 
 public class FarmerMouseListener implements MouseListener {
-    private GameEngine gameEngine;
+    private final GameEngine gameEngine;
     private Thread movementThread; //start a new thread for the movement of the farmer
-    private final int SELECTION_RADIUS =40 ;    //the radius of the selection circle
+    private final int SELECTION_RADIUS = 40 ;    //the radius of the selection circle
 
     public FarmerMouseListener(GameEngine gameEngine) {
         this.gameEngine = gameEngine;

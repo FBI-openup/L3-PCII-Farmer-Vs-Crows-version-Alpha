@@ -1,5 +1,7 @@
 package Model;
 
+import com.sun.jdi.event.ThreadDeathEvent;
+
 import java.awt.Point;
 import java.util.List;
 import javax.swing.Timer;
@@ -10,8 +12,9 @@ public class Crow extends MovingUnits {
     private final int safetyDistance = 16 * 3 * 3;
     private boolean isScared = false;
     private int remainingTime = 6000;
-    private int eatingTime = 7000;
+    private final int eatingTime = 7000;
     private final CrowEatingSoundThread crowEatingSoundThread = new CrowEatingSoundThread();
+    private Units threat = null;
 
     // Constructor
     public Crow(Point position, GameEngine gameEngine) {
@@ -55,19 +58,7 @@ public class Crow extends MovingUnits {
         return nearestScarecrow;
     }
 
-    public Units locateThreat() {
-        Units threat = locateFarmer();
-        Point threatPosition = threat.getPosition();
-        for (Units unit : gameEngine.getUnits()) {
-            if (unit instanceof Scarecrow || unit instanceof Farmer) {
-                if (position.distance(unit.getPosition()) < position.distance(threatPosition)) {
-                    threat = unit;
-                    threatPosition = unit.getPosition();
-                }
-            }
-        }
-        return threat;
-    }
+
 
     public void goLookForCorn(Corn c) {
         System.out.println("-- GO LOOK FOR CORN --"); //
@@ -92,8 +83,7 @@ public class Crow extends MovingUnits {
     }
 
     public void flee() {
-        System.out.println("-- FLEE --"); //
-        destination = locateThreat().getPosition();
+        System.out.println("-- FLEE --");
         // Define the corners
         Point[] corners = new Point[] {
                 new Point(0, 0),
@@ -107,7 +97,7 @@ public class Crow extends MovingUnits {
         double bestDistance = Double.NEGATIVE_INFINITY;
         for (Point corner : corners) {
             double crowToCornerDistance = position.distance(corner);
-            double threatToCornerDistance = destination.distance(corner);
+            double threatToCornerDistance = threat.getPosition().distance(corner);
             if (threatToCornerDistance > bestDistance && crowToCornerDistance < threatToCornerDistance) {
                 bestCorner = corner;
                 bestDistance = threatToCornerDistance;
@@ -117,6 +107,7 @@ public class Crow extends MovingUnits {
         // If a suitable corner was found, move towards it
         if (bestCorner != null) {
             destination = bestCorner;
+            System.out.println("Threat: " + threat + "Destination: " + destination);
             // Calculate the direction vector
             double dx = destination.x - position.x;
             double dy = destination.y - position.y;
@@ -215,14 +206,49 @@ public class Crow extends MovingUnits {
             // If there are no scarecrows, the crow is scared if the farmer is within a certain distance
             if (scarecrow == null) {
                 isScared = position.distance(farmer.getPosition()) < safetyDistance;
+                threat = farmer;
             } else {
                 // If the farmer or the nearest scarecrow are not within a certain distance of the crow, the crow is not scared
                 isScared = position.distance(farmer.getPosition()) < safetyDistance || position.distance(scarecrow.getPosition()) < safetyDistance && scarecrow.getEfficiencyTime() > 0;
+                threat = scarecrow;
             }
         }
     }
 
     /**/
+
+    public void eatCorn(Corn nearestCorn) {
+        if (position.distance(nearestCorn.getPosition()) <= 16) {
+            System.out.println("Crow is eating");
+            crowEatingSoundThread.playSound();
+            new Thread(() -> {
+                Timer timer = new Timer(eatingTime, (ActionEvent e) -> {
+                    if (position.distance(nearestCorn.getPosition()) <= 16) {
+                        System.out.println("Crow ate corn");
+                        gameEngine.removeUnit(nearestCorn);
+                        ((Timer)e.getSource()).stop();
+                        crowEatingSoundThread.stopSound();
+                    } else {
+                        ((Timer)e.getSource()).stop();
+                        crowEatingSoundThread.stopSound();
+                    }
+                });
+                timer.setRepeats(false);
+                timer.start();
+                try {
+                    Thread.sleep(eatingTime);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }).start();
+        } else if (crowEatingSoundThread.isPlaying()) {
+            crowEatingSoundThread.stopSound();
+        }
+    }
+
+    /**/
+
+    /*
 
     public void eatCorn(Corn nearestCorn) {
         if (position.distance(nearestCorn.getPosition()) <= 16) {
@@ -246,7 +272,7 @@ public class Crow extends MovingUnits {
         }
     }
 
-    /**/
+    */
 
     /*
 

@@ -28,7 +28,7 @@ public class CrowGenerationThread extends Thread {
                     gameEngine.generateCrow();
                 }
             }
-        }, 5000, new Random().nextInt(10000) + 15000);
+        }, 5000, new Random().nextInt(10000));
     }
 
     // Stop the thread

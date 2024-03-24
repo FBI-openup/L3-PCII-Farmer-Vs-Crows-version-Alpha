@@ -17,7 +17,7 @@ public class Farmer extends MovingUnits {
         super(new Point(200, 200),gameEngine);
 
         //initialize the timer
-        moveTimer = new Timer(10, e -> move());
+        moveTimer = new Timer(25, e -> move());
         moveTimer.start();
     }
 
