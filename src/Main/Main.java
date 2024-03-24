@@ -17,7 +17,7 @@ public class Main {
         GameEngine gameEngine = new GameEngine();
 
         // Create units and add them to the game engine
-        Farmer farmer = new Farmer(new Point(300, 400), gameEngine);
+        Farmer farmer = new Farmer(gameEngine);
         gameEngine.addUnit(farmer);
 
         /*

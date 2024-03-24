@@ -8,8 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CrowMovementThread extends Thread {
-    GamePanel gamePanel;
-    GameEngine gameEngine;
+    private GamePanel gamePanel;
+    private GameEngine gameEngine;
 
     private volatile boolean running = true;
 

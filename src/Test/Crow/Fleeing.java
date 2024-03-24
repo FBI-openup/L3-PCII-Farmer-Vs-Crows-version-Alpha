@@ -17,7 +17,7 @@ public class Fleeing {
         GameEngine gameEngine = new GameEngine();
 
         // Create units and add them to the game engine
-        Farmer farmer = new Farmer(new Point(300, 350), gameEngine);
+        Farmer farmer = new Farmer(gameEngine);
         gameEngine.addUnit(farmer);
 
         Crow crow = new Crow(new Point(300, 300), gameEngine);

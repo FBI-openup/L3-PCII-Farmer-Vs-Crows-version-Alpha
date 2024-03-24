@@ -2,18 +2,16 @@ package Model;
 
 import java.awt.Point;
 import java.util.List;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.File;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
 
 public class Crow extends MovingUnits {
     // Crow properties
-    private final int safetyDistance = 16 * 3 * 2;
+    private final int safetyDistance = 16 * 3 * 3;
     private boolean isScared = false;
     private int remainingTime = 6000;
-    private int eatingTime;
-    private Clip chewingSound;
+    private int eatingTime = 7000;
+    private final CrowEatingSoundThread crowEatingSoundThread = new CrowEatingSoundThread();
 
     // Constructor
     public Crow(Point position, GameEngine gameEngine) {
@@ -223,34 +221,79 @@ public class Crow extends MovingUnits {
             }
         }
     }
+
+    /**/
+
+    public void eatCorn(Corn nearestCorn) {
+        if (position.distance(nearestCorn.getPosition()) <= 16) {
+            System.out.println("Crow is eating");
+            crowEatingSoundThread.playSound();
+            Timer timer = new Timer(eatingTime, (ActionEvent e) -> {
+                if (position.distance(nearestCorn.getPosition()) <= 16) {
+                    System.out.println("Crow ate corn");
+                    gameEngine.removeUnit(nearestCorn);
+                    ((Timer)e.getSource()).stop();
+                    crowEatingSoundThread.stopSound();
+                } else {
+                    ((Timer)e.getSource()).stop();
+                    crowEatingSoundThread.stopSound();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        } else if (crowEatingSoundThread.isPlaying()) {
+            crowEatingSoundThread.stopSound();
+        }
+    }
+
+    /**/
+
+    /*
+
+    public void eatCorn(Corn nearestCorn) {
+        if (position.distance(nearestCorn.getPosition()) <= 16) {
+            Timer timer = new Timer(5000, (ActionEvent e) -> {
+                if (position.distance(nearestCorn.getPosition()) > 16) {
+                    ((Timer)e.getSource()).stop();
+                } else {
+                    System.out.println("Crow ate corn");
+                    gameEngine.removeUnit(nearestCorn);
+                    ((Timer)e.getSource()).stop();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+
+    */
+
+    /*
     // Method to eat corn
     public void eatCorn(Corn nearestCorn) {
         // Eat the corn
         if (position.distance(nearestCorn.getPosition()) <= 16) {
             eatingTime++;
-            //playChewingSound();
+            if (!crowEatingSoundThread.isPlaying()) {
+                System.out.println("Crow is eating");
+                crowEatingSoundThread.playSound();
+            }
             if (eatingTime >= 200) {
                 gameEngine.removeUnit(nearestCorn);
                 eatingTime = 0;
+                System.out.println("Crow ate corn");
+                if (crowEatingSoundThread.isPlaying()) {
+                    crowEatingSoundThread.stopSound();
+                }
             }
         } else {
             eatingTime = 0;
-            //chewingSound.stop();
+            if (crowEatingSoundThread.isPlaying())
+                crowEatingSoundThread.stopSound();
         }
     }
+    */
 
-
-    public void playChewingSound() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sounds/chewing2 (1).wav").getAbsoluteFile());
-            chewingSound = AudioSystem.getClip();
-            chewingSound.open(audioInputStream);
-            chewingSound.start();
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
-    }
 
     // Getters
     public int getSafetyDistance() {
