@@ -1,5 +1,7 @@
 package Model;
 
+import View.CornStateView;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,12 +101,16 @@ public class GameEngine {
         if (corns.size() == 0) {
             Corn corn = new Corn(new Point(x, y), this);
             this.addUnit(corn);
+            CornStateThread cornStateThread = new CornStateThread(corn);
+            cornStateThread.start();
         }
         for (Corn c : corns) {
             Point pos = c.getPosition();
             if (Math.abs(pos.x - x) > 16 * 3 || Math.abs(pos.y - y) > 16 * 3) {
                 Corn corn = new Corn(new Point(x, y), this);
                 this.addUnit(corn);
+                CornStateThread cornStateThread = new CornStateThread(corn);
+                cornStateThread.start();
             }
         }
     }
