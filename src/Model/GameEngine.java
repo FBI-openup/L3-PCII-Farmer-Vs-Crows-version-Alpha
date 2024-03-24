@@ -82,4 +82,29 @@ public class GameEngine {
         this.addUnit(crow);
     }
 
+    public void generateCorns(int numberOfCorns) {
+        int attempts = 0;
+        List<Corn> corns = getCorns();
+        while (corns.size() < numberOfCorns && attempts < 10) {
+            /* Generate a random position for the corn
+            The corns should not be drawn too close to the edge of the game panel
+            The corns should not be drawn too close to each other
+            */
+            int x = (int) (Math.random() * (768 - 200)) + 100; // x will be between 100 and 668 and 768 is the width of the game panel
+            int y = (int) (Math.random() * (576 - 200)) + 100; // y will be between 100 and 476 and 576 is the height of the game panel
+            boolean tooClose = false;
+            for (Corn corn : corns) {
+                Point pos = corn.getPosition();
+                if (Math.abs(pos.x - x) < 16 * 3 || Math.abs(pos.y - y) < 16 * 3) {
+                    tooClose = true;
+                    break;
+                }
+            }
+            if (!tooClose) {
+                Corn corn = new Corn(new Point(x, y), this);
+                this.addUnit(corn);
+            }
+            attempts++;
+        }
+    }
 }

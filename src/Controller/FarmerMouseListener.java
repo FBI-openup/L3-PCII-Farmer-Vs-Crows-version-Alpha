@@ -27,7 +27,7 @@ public class FarmerMouseListener implements MouseListener {
                 System.out.println("Farmer " + (gameEngine.getFarmer().isSelected() ? "selected" : "deselected"));
             }
         } else if (SwingUtilities.isRightMouseButton(e) && gameEngine.getFarmer().isSelected()) {
-            //when the user right click on the screen, the farmer will move to the location of the click
+            // when the user right click on the screen, the farmer will move to the location of the click
             System.out.println("Setting destination and starting movement");
             Point destination = e.getPoint();
             gameEngine.getFarmer().setDestination(destination); // update the destination of the farmer
