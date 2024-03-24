@@ -4,6 +4,9 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+    * CrowGenerationThread class
+*/
 public class CrowGenerationThread extends Thread {
     // Properties
     private final GameEngine gameEngine;
@@ -28,7 +31,7 @@ public class CrowGenerationThread extends Thread {
                     gameEngine.generateCrow();
                 }
             }
-        }, 5000, new Random().nextInt(10000));
+        }, 5000, new Random().nextInt(10000) + 5000);
     }
 
     // Stop the thread

@@ -6,6 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/*
+    * This class is used to play the crow eating sound.
+*/
 public class CrowEatingSoundThread {
     private Clip clip;
     private volatile boolean playing;

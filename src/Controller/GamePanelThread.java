@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+    This class is responsible for updating the game panel in the game engine.
+*/
 public class GamePanelThread extends Thread {
     private final GamePanel gamePanel;
     private final GameEngine gameEngine;
@@ -23,7 +26,7 @@ public class GamePanelThread extends Thread {
         while (running) {
             // DRAW : draw the game panel
             while (running) {
-                gamePanel.repaint();
+                renderGame();
                 try {
                     Thread.sleep(DELAY);
                 } catch (Exception e) {

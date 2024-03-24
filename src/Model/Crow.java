@@ -7,11 +7,14 @@ import java.util.List;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 
+/*
+    * Crow class
+*/
 public class Crow extends MovingUnits {
     // Crow properties
     private final int safetyDistance = 16 * 3 * 3;
     private boolean isScared = false;
-    private int remainingTime = 6000;
+    private int remainingTime = 15000;
     private final int eatingTime = 7000;
     private final CrowEatingSoundThread crowEatingSoundThread = new CrowEatingSoundThread();
     private Units threat = null;
@@ -58,8 +61,7 @@ public class Crow extends MovingUnits {
         return nearestScarecrow;
     }
 
-
-
+    // Method to move the crow towards the nearest corn
     public void goLookForCorn(Corn c) {
         System.out.println("-- GO LOOK FOR CORN --"); //
         // Move towards the nearest corn
@@ -82,6 +84,7 @@ public class Crow extends MovingUnits {
         }
     }
 
+    // Method to make the crow flee
     public void flee() {
         System.out.println("-- FLEE --");
         // Define the corners
@@ -129,6 +132,7 @@ public class Crow extends MovingUnits {
         }
     }
 
+    // Method to make the crow leave
     public void leave() {
         System.out.println("-- LEAVE --"); //
         // Define the corners
@@ -154,7 +158,6 @@ public class Crow extends MovingUnits {
         // Calculate the direction vector
         double dx = destination.x - position.x;
         double dy = destination.y - position.y;
-        // Normalize the direction vector
         speed = 1/Math.sqrt(dx * dx + dy * dy);
         dx *= speed;
         dy *= speed;
@@ -168,8 +171,6 @@ public class Crow extends MovingUnits {
             gameEngine.removeUnit(this);
         }
     }
-
-
 
     // Method to move the crow
     @Override
@@ -215,8 +216,7 @@ public class Crow extends MovingUnits {
         }
     }
 
-    /**/
-
+    // Method to eat corn
     public void eatCorn(Corn nearestCorn) {
         if (position.distance(nearestCorn.getPosition()) <= 16) {
             System.out.println("Crow is eating");

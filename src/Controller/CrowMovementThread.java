@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+    This class is responsible for updating the crow positions in the game engine.
+    It uses a thread pool to update the positions of the crows concurrently.
+*/
 public class CrowMovementThread extends Thread {
     private final GamePanel gamePanel;
     private final GameEngine gameEngine;
@@ -37,6 +41,7 @@ public class CrowMovementThread extends Thread {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(5); // 10 threads in the pool
 
+    // UPDATE : update the crow positions
     private void updateCrow() {
         List<Crow> crows = gameEngine.getCrows();
         for (Crow crow : crows) {
