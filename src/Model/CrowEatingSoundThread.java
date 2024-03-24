@@ -27,7 +27,6 @@ public class CrowEatingSoundThread {
         playing = true;
         executorService.scheduleAtFixedRate(() -> {
             if (playing) {
-                System.out.println("Playing sound");
                 clip.setFramePosition(0);
                 clip.start();
             }

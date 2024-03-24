@@ -36,7 +36,7 @@ public class Farmer extends MovingUnits {
 
         // if the distance is less than the speed, the farmer has reached the destination
         if (distance <= speed) {
-            System.out.println("Farmer reached destination");
+            //System.out.println("Farmer reached destination");
             position.setLocation(destination);
             return;
         }
