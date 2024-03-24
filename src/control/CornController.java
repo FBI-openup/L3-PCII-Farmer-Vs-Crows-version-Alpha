@@ -5,7 +5,7 @@ import java.util.Random;
 import model.*;
 import view.*;
 
-public class CornController extends MouseAdapter {
+public class CornController implements MouseListener {
     private Corn corn;
     private CornPanel cornPanel;
     private Random random;
@@ -34,5 +34,25 @@ public class CornController extends MouseAdapter {
 
         System.out.println("Revenue generated: " + corn.getRevenue());
 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Do nothing
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Do nothing
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Do nothing
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Do nothing
     }
 }
