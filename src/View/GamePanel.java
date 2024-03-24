@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CornMouseListener;
 import Controller.FarmerMouseListener;
 import Model.*;
 
@@ -70,7 +71,6 @@ public class GamePanel extends JPanel {
                  g.drawOval(position.x- ((Farmer) unit).getScareRange()/2, position.y- ((Farmer) unit).getScareRange()/2, ((Farmer) unit).getScareRange(), ((Farmer) unit).getScareRange()); // represent the farmer as a circle
                 // Draw a line from the farmer to the destination
                 if (((Farmer) unit).getDestination() != null) {
-                    //Graphics2D g2d = (Graphics2D) g.create();
                     g2d.setColor(Color.BLACK);
                     //draw a line from the farmer to the destination
                     g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{5.0f}, 0.0f));
@@ -90,6 +90,7 @@ public class GamePanel extends JPanel {
             else if (unit instanceof Corn) {
                 currentImage = cornImage;
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
+                // TODO : Draw a progress bar representing the growth of the corn
             }
             // Draw the scarecrow
             else if (unit instanceof Scarecrow) {

@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.*;
+import View.CornStateView;
+
 import java.awt.Point;
 import javax.swing.Timer;
 
@@ -16,7 +19,7 @@ public class Farmer extends MovingUnits {
 
     // Constructor
     public Farmer(GameEngine gameEngine) {
-        super(new Point(200, 200),gameEngine);
+        super(new Point(384, 288),gameEngine);
 
         //initialize the timer
         moveTimer = new Timer(25, e -> move());
@@ -61,6 +64,7 @@ public class Farmer extends MovingUnits {
         for (Corn corn : gameEngine.getCorns()) {
             if (position.distance(corn.getPosition()) <= collectingDistance) {
                 System.out.println("Farmer is collecting corn");
+                //CornMouseListener cornMouseListener = new CornMouseListener(corn, new CornStateView(new CornStateThread(corn)));
                 gameEngine.removeUnit(corn);
                 System.out.println("Farmer collected corn");
             }

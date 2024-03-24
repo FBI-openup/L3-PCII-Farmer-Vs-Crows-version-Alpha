@@ -15,7 +15,7 @@ public class Crow extends MovingUnits {
     private final int safetyDistance = 16 * 3 * 3;
     private boolean isScared = false;
     private int remainingTime = 15000;
-    private final int eatingTime = 7000;
+    private final int eatingTime = 6000;
     private final CrowEatingSoundThread crowEatingSoundThread = new CrowEatingSoundThread();
     private Units threat = null;
 
@@ -217,7 +217,7 @@ public class Crow extends MovingUnits {
     }
 
     // Method to eat corn
-    public void eatCorn(Corn nearestCorn) {
+    public synchronized void eatCorn(Corn nearestCorn) {
         if (position.distance(nearestCorn.getPosition()) <= 16) {
             System.out.println("Crow is eating");
             crowEatingSoundThread.playSound();
@@ -236,7 +236,7 @@ public class Crow extends MovingUnits {
                 timer.setRepeats(false);
                 timer.start();
                 try {
-                    Thread.sleep(eatingTime);
+                    Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
