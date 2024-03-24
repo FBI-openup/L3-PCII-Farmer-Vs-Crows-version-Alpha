@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
 
-    // SCREEN SETTINGS
+    // Screen settings
     private final int originalTileSize = 16; // 16x16 pixels
     private final int scale = 3; // 3x scale
 
@@ -22,15 +22,18 @@ public class GamePanel extends JPanel {
     private final int maxScreenRow = 12; // 12 tiles tall
     private final int screenWidth = tileSize * maxScreenCol; // 768 pixels wide
     private final int screenHeight = tileSize * maxScreenRow; // 576 pixels tall
+
+    // Images
     private BufferedImage farmerImage;
     private BufferedImage crowImage;
     private BufferedImage cornImage;
     private BufferedImage scarecrowImage;
 
-
+    // Game engine
     private final GameEngine gameEngine;
 
-    // CONSTRUCTOR
+
+    // Constructor
     public GamePanel(GameEngine gameEngine) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(0, 100, 0));
@@ -47,7 +50,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // DRAW
+    // DRAW : draw the game panel
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -56,11 +59,11 @@ public class GamePanel extends JPanel {
         for (Units unit : gameEngine.getUnits()) {
             BufferedImage currentImage = null;
             Point position = unit.getPosition();
+            // Draw the farmer
             if (unit instanceof Farmer) {
                 currentImage = farmerImage;
                 FarmerMouseListener farmerMouseListener = new FarmerMouseListener(gameEngine);
                 this.addMouseListener(farmerMouseListener);
-                /**/
                  g.setColor(((Farmer) unit).isSelected() ? Color.BLUE : Color.RED);
                  g.fillOval(position.x - 48, position.y - 48, tileSize * 2, tileSize * 2);
                  g.setColor(Color.BLACK);
@@ -73,20 +76,23 @@ public class GamePanel extends JPanel {
                     g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{5.0f}, 0.0f));
                     g2d.drawLine(position.x, position.y, ((Farmer) unit).getDestination().x, ((Farmer) unit).getDestination().y);
                 }
-
-                /**/
-
                 g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
-            } else if (unit instanceof Crow) {
+            }
+            // Draw the crow
+            else if (unit instanceof Crow) {
                 currentImage = crowImage;
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
                 // Draw a circle representing the safety distance of the crow centered at the crow's position
                 g.setColor(Color.BLACK);
                 g.drawOval(position.x - ((Crow) unit).getSafetyDistance() / 2, position.y - ((Crow) unit).getSafetyDistance() / 2, ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance());
-            } else if (unit instanceof Corn) {
+            }
+            // Draw the corn
+            else if (unit instanceof Corn) {
                 currentImage = cornImage;
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
-            } else if (unit instanceof Scarecrow) {
+            }
+            // Draw the scarecrow
+            else if (unit instanceof Scarecrow) {
                 currentImage = scarecrowImage;
                 g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
                 // Draw a circle representing the safety distance of the scarecrow centered at the scarecrow's position

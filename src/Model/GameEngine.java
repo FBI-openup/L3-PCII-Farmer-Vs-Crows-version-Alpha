@@ -4,10 +4,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    * GameEngine class
+    * This class is responsible for managing the game
+ */
 public class GameEngine {
     private final List<Units> units;
 
-    // CONSTRUCTOR
+    // Constructor
     public GameEngine() {
         units = new ArrayList<>();
     }

@@ -7,7 +7,9 @@ import java.awt.event.MouseListener;
 import java.awt.Point;
 import javax.swing.SwingUtilities;
 
-
+/*
+    * This class is responsible for handling the mouse events for the farmer.
+*/
 public class FarmerMouseListener implements MouseListener {
     private final GameEngine gameEngine;
     private Thread movementThread; //start a new thread for the movement of the farmer
@@ -17,6 +19,7 @@ public class FarmerMouseListener implements MouseListener {
         this.gameEngine = gameEngine;
     }
 
+    // When the user clicks on the screen, the farmer will be selected or moved
     @Override
     public void mouseClicked(MouseEvent e) {
         Point clickPoint = e.getPoint(); //get the point where the user clicked

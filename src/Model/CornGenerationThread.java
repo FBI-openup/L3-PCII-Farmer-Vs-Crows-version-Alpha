@@ -4,6 +4,10 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+    * CornGenerationThread class
+    * Thread to generate corns
+*/
 public class CornGenerationThread extends Thread {
     // Properties
     private final GameEngine gameEngine;

@@ -1,18 +1,20 @@
 package Model;
 
-import Model.*;
-
 import java.awt.Point;
 import javax.swing.Timer;
 
+/*
+    * Farmer class
+ */
 public class Farmer extends MovingUnits {
+
     // Farmer attributes
     private boolean isSelected = false; //check if the unit is selected
     private final Timer moveTimer; //used to control the movement of the farmer
     private final int scareRange = 16 * 3 * 3; //the range to scare the crow
     private final int collectingDistance = 16 * 3; //the distance to collect corn
 
-    // CONSTRUCTOR
+    // Constructor
     public Farmer(GameEngine gameEngine) {
         super(new Point(200, 200),gameEngine);
 
@@ -52,6 +54,17 @@ public class Farmer extends MovingUnits {
         // update the position each time
         position.translate(moveX, moveY);
         System.out.println("Farmer moving to " + position);
+    }
+
+    // Collect corn
+    public void collectCorn() {
+        for (Corn corn : gameEngine.getCorns()) {
+            if (position.distance(corn.getPosition()) <= collectingDistance) {
+                System.out.println("Farmer is collecting corn");
+                gameEngine.removeUnit(corn);
+                System.out.println("Farmer collected corn");
+            }
+        }
     }
 
     // Get the position of the farmer
@@ -106,17 +119,6 @@ public class Farmer extends MovingUnits {
     // Get the scare range of the farmer
     public int getScareRange() {
         return scareRange;
-    }
-
-    // Collect corn
-    public void collectCorn() {
-        for (Corn corn : gameEngine.getCorns()) {
-            if (position.distance(corn.getPosition()) <= collectingDistance) {
-                System.out.println("Farmer is collecting corn");
-                gameEngine.removeUnit(corn);
-                System.out.println("Farmer collected corn");
-            }
-        }
     }
 }
 
