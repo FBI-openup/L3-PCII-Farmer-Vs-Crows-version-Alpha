@@ -18,37 +18,11 @@ public class CrowMovementThread extends Thread {
         this.gameEngine = gameEngine;
     }
 
-    /*
-    @Override
-    public void run() {
-        int FPS = 45;
-        double drawInterval = 1000000000 / FPS;
-        double nextDrawTime = System.nanoTime() + drawInterval;
-        while(running) {
-            // UPDATE : update the crow positions
-            updateCrow();
-            // DRAW : draw the game panel
-            //renderGame();
-            // SLEEP : sleep until next draw
-            try {
-                double sleepTime = (nextDrawTime - System.nanoTime()) / 1000000;
-                if (sleepTime < 0) {
-                    sleepTime = 0;
-                }
-                Thread.sleep((long) sleepTime);
-                nextDrawTime += drawInterval;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
-
     @Override
     public void run() {
         while(running) {
             // UPDATE : update the crow positions
             updateCrow();
-            // SLEEP : sleep until next draw
             try {
                 Thread.sleep(25);
             } catch (Exception e) {
@@ -56,12 +30,10 @@ public class CrowMovementThread extends Thread {
             }
         }
     }
-
     public void stopThread() {
         running = false;
         executorService.shutdown();
     }
-
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(5); // 10 threads in the pool
 
@@ -78,27 +50,4 @@ public class CrowMovementThread extends Thread {
             System.out.println(crow.getPosition());
         }
     }
-
-
-//    private void updateCrow() {
-//        List<Crow> crows = gameEngine.getCrows();
-//        int i = 0;
-//        for (Crow crow : crows) {
-//            new Thread(() -> {
-//                try {
-//                    crow.move(corn.getPosition());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }).start();
-//            i++;
-//        }
-//    }
-
-    /*
-    // DRAW : draw the game panel
-    private void renderGame() {
-        gamePanel.revalidate();
-        gamePanel.repaint();
-    }*/
 }
