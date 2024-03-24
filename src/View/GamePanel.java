@@ -93,8 +93,6 @@ public class GamePanel extends JPanel {
                 g.setColor(Color.BLACK);
                 g.drawOval(position.x - ((Scarecrow) unit).getEfficiencyRange() / 2, position.y - ((Scarecrow) unit).getEfficiencyRange() / 2, ((Scarecrow) unit).getEfficiencyRange(), ((Scarecrow) unit).getEfficiencyRange());
             }
-            //g2d.fillOval(position.x - 24, position.y - 24, tileSize, tileSize);
-
         }
         g2d.dispose();
     }

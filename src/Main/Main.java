@@ -20,16 +20,6 @@ public class Main {
         Farmer farmer = new Farmer(gameEngine);
         gameEngine.addUnit(farmer);
 
-        /*
-        Corn corn3 = new Corn(new Point(500, 200), gameEngine);
-        gameEngine.addUnit(corn3);
-        Corn corn4 = new Corn(new Point(350, 400), gameEngine);
-        gameEngine.addUnit(corn4);
-        Corn corn5 = new Corn(new Point(700, 200), gameEngine);
-        gameEngine.addUnit(corn5);
-        Corn corn6 = new Corn(new Point(800, 400), gameEngine);
-        gameEngine.addUnit(corn6);*/
-
         Scarecrow scarecrow = new Scarecrow(new Point(200, 450), gameEngine);
         gameEngine.addUnit(scarecrow);
 
