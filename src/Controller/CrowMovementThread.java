@@ -8,8 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CrowMovementThread extends Thread {
-    private GamePanel gamePanel;
-    private GameEngine gameEngine;
+    private final GamePanel gamePanel;
+    private final GameEngine gameEngine;
 
     private volatile boolean running = true;
 
@@ -18,6 +18,7 @@ public class CrowMovementThread extends Thread {
         this.gameEngine = gameEngine;
     }
 
+    /*
     @Override
     public void run() {
         int FPS = 45;
@@ -27,7 +28,7 @@ public class CrowMovementThread extends Thread {
             // UPDATE : update the crow positions
             updateCrow();
             // DRAW : draw the game panel
-            renderGame();
+            //renderGame();
             // SLEEP : sleep until next draw
             try {
                 double sleepTime = (nextDrawTime - System.nanoTime()) / 1000000;
@@ -36,6 +37,20 @@ public class CrowMovementThread extends Thread {
                 }
                 Thread.sleep((long) sleepTime);
                 nextDrawTime += drawInterval;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
+
+    @Override
+    public void run() {
+        while(running) {
+            // UPDATE : update the crow positions
+            updateCrow();
+            // SLEEP : sleep until next draw
+            try {
+                Thread.sleep(25);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,9 +95,10 @@ public class CrowMovementThread extends Thread {
 //        }
 //    }
 
+    /*
     // DRAW : draw the game panel
     private void renderGame() {
         gamePanel.revalidate();
         gamePanel.repaint();
-    }
+    }*/
 }

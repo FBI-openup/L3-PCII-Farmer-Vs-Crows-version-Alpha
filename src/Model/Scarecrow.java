@@ -14,4 +14,7 @@ public class Scarecrow extends Units {
     public int getEfficiencyTime() {
         return efficiencyTime;
     }
+    public int getEfficiencyRange() {
+        return efficiencyRange;
+    }
 }

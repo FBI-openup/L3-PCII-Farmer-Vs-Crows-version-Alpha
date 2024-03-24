@@ -81,13 +81,17 @@ public class GamePanel extends JPanel {
                 currentImage = crowImage;
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
                 // Draw a circle representing the safety distance of the crow centered at the crow's position
-                //g2d.drawOval(unit.getPosition().x - ((Crow) unit).getSafetyDistance(), unit.getPosition().y - ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance() * 2, ((Crow) unit).getSafetyDistance() * 2);
+                g.setColor(Color.BLACK);
+                g.drawOval(position.x - ((Crow) unit).getSafetyDistance() / 2, position.y - ((Crow) unit).getSafetyDistance() / 2, ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance());
             } else if (unit instanceof Corn) {
                 currentImage = cornImage;
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
             } else if (unit instanceof Scarecrow) {
                 currentImage = scarecrowImage;
                 g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
+                // Draw a circle representing the safety distance of the scarecrow centered at the scarecrow's position
+                g.setColor(Color.BLACK);
+                g.drawOval(position.x - ((Scarecrow) unit).getEfficiencyRange() / 2, position.y - ((Scarecrow) unit).getEfficiencyRange() / 2, ((Scarecrow) unit).getEfficiencyRange(), ((Scarecrow) unit).getEfficiencyRange());
             }
             //g2d.fillOval(position.x - 24, position.y - 24, tileSize, tileSize);
 
