@@ -21,8 +21,8 @@ public class GameInterface extends JFrame {
         setLayout(new BorderLayout());
         setSize(1400, 800);
 
-        gameEngine = new GameEngine(); // 初始化游戏引擎
-        initializeGameUnits(); // 初始化游戏单位
+        gameEngine = new GameEngine();
+        initializeGameUnits();
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -46,19 +46,13 @@ public class GameInterface extends JFrame {
     }
 
     private void initializeGameUnits() {
-        // 在这里初始化您的游戏单位，例如：
+
         gameEngine.addUnit(new Farmer(gameEngine));
         Scarecrow scarecrow = new Scarecrow(new Point(150, 500), gameEngine);
         gameEngine.addUnit(scarecrow);
 
 
-       // CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
-       // CrowGenerationThread crowThread = new CrowGenerationThread(gameEngine);
-        //CornGenerationThread cornThread = new CornGenerationThread(gameEngine);
-        //gameThread.start();
-       // crowThread.start();
-       // cornThread.start();
-        // 更多初始化...
+
     }
 
     private JPanel createStartPanel() {
@@ -106,7 +100,7 @@ public class GameInterface extends JFrame {
         repaintTimer.start();
     }
     private void startGameThreads() {
-        // 在这个方法中启动线程
+
         CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
         CrowGenerationThread crowThread = new CrowGenerationThread(gameEngine);
         CornGenerationThread cornThread = new CornGenerationThread(gameEngine);
