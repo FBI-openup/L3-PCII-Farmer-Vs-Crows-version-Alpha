@@ -1,16 +1,15 @@
+package Main;
+
+import Controller.*;
+import Model.*;
+import View.GameInterface;
+import View.GamePanel;
+
 import javax.swing.*;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new GameInterface();
-            }
-        });
+        SwingUtilities.invokeLater(GameInterface::new);
     }
 }

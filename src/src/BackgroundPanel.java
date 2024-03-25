@@ -1,8 +1,8 @@
-package View;
-
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 class BackgroundPanel extends JPanel {
     // La classe BackgroundPanel sert à implémenter un JPanel qui peut afficher une image de fond
