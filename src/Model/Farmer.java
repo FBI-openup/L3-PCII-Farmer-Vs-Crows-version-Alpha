@@ -1,8 +1,5 @@
 package Model;
 
-import Controller.*;
-import View.CornStateView;
-
 import java.awt.Point;
 import javax.swing.Timer;
 
@@ -13,16 +10,31 @@ public class Farmer extends MovingUnits {
 
     // Farmer attributes
     private boolean isSelected = false; //check if the unit is selected
-    private final Timer moveTimer; //used to control the movement of the farmer
     private final int scareRange = 16 * 3 * 3; //the range to scare the crow
     private final int collectingDistance = 16 * 3; //the distance to collect corn
+    private final Timer moveTimer = new Timer(25, e -> move()); //used to control the movement of the farmer
+    private final Timer collectCornCd = new Timer(10000, e -> isCollectCornInCd = false);
+    private boolean isCollectCornInCd = false;
+    private final Timer plantSeedCd = new Timer(5000, e -> isPlantSeedInCd = false);
+    private boolean isPlantSeedInCd = false;
+    private final Timer takeScareCrowCdTimer = new Timer(5000, e -> takeScareCrowInCd = false);
+    private boolean takeScareCrowInCd = false;
+    private Scarecrow scarecrowTaken = null;
+    private final Timer placeScareCrowCdTimer = new Timer(5000, e -> placeScareCrowInCd = false);
+    private boolean placeScareCrowInCd = false;
 
     // Constructor
     public Farmer(GameEngine gameEngine) {
-        super(new Point(384, 288),gameEngine);
+        super(new Point(384, 288), gameEngine);
+        this.setTimers();
+    }
 
-        //initialize the timer
-        moveTimer = new Timer(25, e -> move());
+    // Set the timers
+    private void setTimers() {
+        collectCornCd.setRepeats(true);
+        plantSeedCd.setRepeats(true);
+        takeScareCrowCdTimer.setRepeats(true);
+        placeScareCrowCdTimer.setRepeats(true);
         moveTimer.start();
     }
 
@@ -30,7 +42,14 @@ public class Farmer extends MovingUnits {
     @Override
     public void move() {
         //set a speed for the farmers movement
-        speed = 2;
+        
+        if (scarecrowTaken != null) {
+            speed = 2;
+            scarecrowTaken.setPosition(position);
+        }
+        else {
+            speed = 3;
+        }
 
         //calculate the direction to the destination
         int dx = destination.x - position.x;
@@ -60,7 +79,8 @@ public class Farmer extends MovingUnits {
     }
 
     // Collect corn
-    public void collectCorn() {
+    /*
+    public synchronized void collectCorn() {
         for (Corn corn : gameEngine.getCorns()) {
             if (position.distance(corn.getPosition()) <= collectingDistance) {
                 System.out.println("Farmer is collecting corn");
@@ -68,6 +88,74 @@ public class Farmer extends MovingUnits {
                 gameEngine.removeUnit(corn);
                 System.out.println("Farmer collected corn");
             }
+        }
+    }*/
+
+    public synchronized void collectCorn() {
+        if (!isCollectCornInCd) {
+            for (Corn corn : gameEngine.getCorns()) {
+                if (position.distance(corn.getPosition()) <= collectingDistance) {
+                    System.out.println("Farmer is collecting corn");
+                    gameEngine.removeUnit(corn);
+                    System.out.println("Farmer collected corn");
+                }
+            }
+
+            // Start the Cd
+            isCollectCornInCd = true;
+            collectCornCd.start();
+        }
+    }
+
+    public synchronized void plantSeed() {
+        Point pos = new Point(this.position);
+        // Check if the farmer is not in Cd
+        if (!isPlantSeedInCd) {
+            System.out.println("Farmer is planting a seed");
+            Corn corn = new Corn(pos, gameEngine);
+            gameEngine.addUnit(corn);
+            System.out.println("Farmer planted a seed");
+            isPlantSeedInCd = true;
+            plantSeedCd.start();
+        }
+    }
+
+    public void takeScarecrow() {
+        if (!takeScareCrowInCd && scarecrowTaken == null) {
+            for (Scarecrow scarecrow : gameEngine.getScarecrows()) {
+                if (position.distance(scarecrow.getPosition()) <= collectingDistance) {
+                    System.out.println("Farmer is taking scarecrow");
+                    //scarecrow.setX(position.x + 16);
+                    //scarecrow.setY(position.y + 16);
+                    scarecrowTaken = scarecrow;
+                    scarecrow.setTaken(true);
+                    System.out.println("Farmer took scarecrow");
+                }
+            }
+
+            // Start the Cd
+            takeScareCrowInCd = true;
+            takeScareCrowCdTimer.start();
+        }
+    }
+
+    public void placeScareCrow() {
+        // Check if the farmer is not in Cd
+        if (!placeScareCrowInCd && scarecrowTaken != null) {
+            Point pos = new Point(this.position);
+            scarecrowTaken.setPosition(pos);
+            scarecrowTaken.setTaken(false);
+            scarecrowTaken = null;
+            /*
+            Point pos = new Point(this.position);
+            for (Scarecrow scarecrow : gameEngine.getScarecrows()) {
+                if (scarecrow.isTaken()) {
+                    scarecrow.setPosition(pos);
+                    System.out.println("Farmer placed a scarecrow");
+                    placeScareCrowInCd = true;
+                    placeScareCrowCdTimer.start();
+                }
+            }*/
         }
     }
 
