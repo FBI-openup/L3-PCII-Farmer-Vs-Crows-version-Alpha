@@ -14,6 +14,7 @@ public class Farmer extends MovingUnits {
     private int numCornForFood = 3; //the number of corn for food in the bag
     private final int scareRange = 16 * 3 * 3; //the range to scare the crow
     private final int collectingDistance = 16 * 3; //the distance to collect corn
+    private double droppingDistance = 16 * 3 * 2; //the distance to drop corn
     private final Timer moveTimer = new Timer(25, e -> move()); //used to control the movement of the farmer
     private final Timer collectCornCd = new Timer(10000, e -> collectCornInCd = false);
     private boolean collectCornInCd = false;
@@ -111,6 +112,7 @@ public class Farmer extends MovingUnits {
                     System.out.println("Farmer is taking corn");
                     cornTaken = corn;
                     corn.setTaken(true);
+                    corn.getCornLifeCycleThread().stopThread();
                     System.out.println("Farmer took corn");
                     break;
                 }
@@ -124,7 +126,7 @@ public class Farmer extends MovingUnits {
 
     public void dropCornAtHarvestingCenter() {
         for (HarvestingCenter center : gameEngine.getHarvestingCenters()) {
-            if (position.distance(center.getPosition()) <= collectingDistance) {
+            if (position.distance(center.getPosition()) <= droppingDistance) {
                 if (cornTaken.getLifeCycle() == Corn.LifeCycle.MATURE)
                     center.getCorn(cornTaken);
                 gameEngine.removeUnit(cornTaken);
@@ -133,24 +135,6 @@ public class Farmer extends MovingUnits {
             }
         }
     }
-
-    /*
-    public synchronized void collectCorn() {
-        if (!isCollectCornInCd) {
-            for (Corn corn : gameEngine.getCorns()) {
-                if (position.distance(corn.getPosition()) <= collectingDistance) {
-                    System.out.println("Farmer is collecting corn");
-                    gameEngine.removeUnit(corn);
-                    gameEngine.setScore(gameEngine.getScore() + 1);
-                    System.out.println("Farmer collected corn");
-                    break;
-                }
-            }
-            // Start the Cd
-            isCollectCornInCd = true;
-            collectCornCd.start();
-        }
-    }*/
 
     public synchronized void plantSeed() {
         if (gameEngine.getSeedConversionCenter().getNumSeeds() > 0) {
@@ -310,6 +294,134 @@ public class Farmer extends MovingUnits {
         return scareRange;
     }
 
-}
+    // Get the collecting distance of the farmer
+    public int getCollectingDistance() {
+        return collectingDistance;
+    }
 
+    // Get the number of corn for food in the bag
+    public int getNumCornForFood() {
+        return numCornForFood;
+    }
+
+    // Get the dropping distance of the farmer
+    public double getDroppingDistance() {
+        return droppingDistance;
+    }
+
+    // Methods used for making the buttons unclickable or not
+
+    // The bag is empty
+    public boolean bagEmpty() {
+        return numCornForFood == 0;
+    }
+
+    // The bag is full
+    public boolean bagFull() {
+        return numCornForFood == 5;
+    }
+
+    // Farmer has seeds
+    public boolean hasSeeds() {
+        return gameEngine.getSeedConversionCenter().getNumSeeds() > 0;
+    }
+
+    // Farmer is not on a corn or scarecrow or harvesting center
+    public boolean notOnCornOrScarecrowOrHarvestingCenter() {
+        for (Corn corn : gameEngine.getCorns()) {
+            if (position.distance(corn.getPosition()) <= collectingDistance) {
+                return false;
+            }
+        }
+        for (Scarecrow scarecrow : gameEngine.getScarecrows()) {
+            if (position.distance(scarecrow.getPosition()) <= collectingDistance) {
+                return false;
+            }
+        }
+        for (HarvestingCenter center : gameEngine.getHarvestingCenters()) {
+            if (position.distance(center.getPosition()) <= droppingDistance) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Farmer is holding a corn
+    public boolean cornTaken() {
+        return cornTaken != null;
+    }
+
+    // Farmer is holding a scarecrow
+    public boolean scarecrowTaken() {
+        return scarecrowTaken != null;
+    }
+
+    // Farmer is at a harvesting center
+    public boolean atHarvestingCenter() {
+        for (HarvestingCenter center : gameEngine.getHarvestingCenters()) {
+            if (position.distance(center.getPosition()) <= droppingDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Farmer is close to a corn
+    public boolean isCloseToCorn() {
+        for (Corn corn : gameEngine.getCorns()) {
+            if (position.distance(corn.getPosition()) <= collectingDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Farmer is close to a scarecrow
+    public boolean isCloseToScarecrow() {
+        for (Scarecrow scarecrow : gameEngine.getScarecrows()) {
+            if (position.distance(scarecrow.getPosition()) <= collectingDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    ///////////////////////////////////////////
+
+    // Button HarvestCorn is clickable
+    public boolean harvestCornClickable() {
+        return !cornTaken() && !scarecrowTaken() && isCloseToCorn();
+    }
+
+    // Button DropCorn is clickable
+    public boolean dropCornClickable() {
+        return cornTaken() && atHarvestingCenter();
+    }
+
+    // Button PlantSeed is clickable
+    public boolean plantSeedClickable() {
+        return !cornTaken() && !scarecrowTaken() && hasSeeds() && !isCloseToCorn() && !isCloseToScarecrow();
+    }
+
+    // Button EatCorn is clickable
+    public boolean eatCornClickable() {
+        return cornTaken() || numCornForFood > 0;
+    }
+
+    // Button PlaceCornInBag is clickable
+    public boolean placeCornInBagClickable() {
+        return cornTaken() && !bagFull();
+    }
+
+    // Button TakeScarecrow is clickable
+    public boolean takeScarecrowClickable() {
+        return !cornTaken() && !scarecrowTaken() && isCloseToScarecrow();
+    }
+
+    // Button PlaceScarecrow is clickable
+    public boolean placeScarecrowClickable() {
+        return scarecrowTaken() && notOnCornOrScarecrowOrHarvestingCenter();
+    }
+
+}
 

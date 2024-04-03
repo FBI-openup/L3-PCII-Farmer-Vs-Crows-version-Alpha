@@ -31,7 +31,7 @@ public class Crow extends MovingUnits {
         if (corns.isEmpty()) {
             return null;
         }
-        Corn nearestCorn = corns.getFirst();
+        Corn nearestCorn = corns.get(0);
         for (Corn corn : corns) {
             if (position.distance(corn.getPosition()) < position.distance(nearestCorn.getPosition())) {
                 nearestCorn = corn;
@@ -52,7 +52,7 @@ public class Crow extends MovingUnits {
         if (scarecrows.isEmpty()) {
             return null;
         }
-        Scarecrow nearestScarecrow = scarecrows.getFirst();
+        Scarecrow nearestScarecrow = scarecrows.get(0);
         for (Scarecrow scarecrow : scarecrows) {
             if (position.distance(scarecrow.getPosition()) < position.distance(nearestScarecrow.getPosition())) {
                 nearestScarecrow = scarecrow;

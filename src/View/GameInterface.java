@@ -57,7 +57,6 @@ public class GameInterface extends JFrame {
         setVisible(true);
     }
 
-
     private JPanel createStartPanel() {
         BackgroundPanel startPanel = new BackgroundPanel("images/background.jpg");
         startPanel.setLayout(new GridBagLayout());
@@ -69,41 +68,6 @@ public class GameInterface extends JFrame {
         startPanel.add(startButton);
         return startPanel;
     }
-
-    /*
-    private JPanel createControlPanel() {
-        JPanel controlPanel = new JPanel(new GridBagLayout());
-        controlPanel.setPreferredSize(new Dimension(200, getHeight()));
-        String[] buttonLabels = { "Plant Corn", "Harvest Corn","Drop Corn", "Place Corn in the bag", "Eat Corn", "Take Scarecrow", "Place Scarecrow"};
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 10, 10, 10); // for padding
-
-
-        for (String label : buttonLabels) {
-            JButton button = new JButton(label);
-            button.addActionListener(e -> {
-                // existing action listeners
-            });
-            controlPanel.add(button, gbc);
-        }
-
-        // Add score display
-        JLabel scoreLabel = new JLabel("Score: " + gameEngine.getScore());
-        controlPanel.add(scoreLabel, gbc);
-
-        // Add seeds and corns display
-        JLabel seedsAndCornsLabel = new JLabel("Seeds: " + gameEngine.getSeedConversionCenter().getNumSeeds() + " Corns: " + gameEngine.getSellingCenter().getCornSold());
-        controlPanel.add(seedsAndCornsLabel, gbc);
-
-        // Show health of the farmer
-        JLabel healthLabel = new JLabel("Health: " + gameEngine.getFarmer().getHealth());
-        controlPanel.add(healthLabel, gbc);
-
-        return controlPanel;
-    }*/
-
 
     private JPanel createControlPanel() {
         JPanel controlPanel = new JPanel(new GridBagLayout());
@@ -185,7 +149,7 @@ public class GameInterface extends JFrame {
         }
     }
     private void setupRepaintTimer(int delay) {
-        repaintTimer = new Timer(delay, e -> gamePanel.repaint());
+        repaintTimer = new Timer(delay, e -> { gamePanel.revalidate(); gamePanel.repaint();} );
         repaintTimer.start();
     }
     private void startGameThreads() {

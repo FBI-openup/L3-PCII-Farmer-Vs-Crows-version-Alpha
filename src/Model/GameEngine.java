@@ -141,16 +141,16 @@ public class GameEngine {
         if (corns.size() == 0) {
             Corn corn = new Corn(new Point(x, y), this);
             this.addUnit(corn);
-            CornLifeCycleThread cornLifeCycleThread = new CornLifeCycleThread(corn);
-            cornLifeCycleThread.start();
+            //CornLifeCycleThread cornLifeCycleThread = new CornLifeCycleThread(corn);
+            //cornLifeCycleThread.start();
         }
         for (Corn c : corns) {
             Point pos = c.getPosition();
             if (Math.abs(pos.x - x) > 16 * 3 || Math.abs(pos.y - y) > 16 * 3) {
                 Corn corn = new Corn(new Point(x, y), this);
                 this.addUnit(corn);
-                CornLifeCycleThread cornLifeCycleThread = new CornLifeCycleThread(corn);
-                cornLifeCycleThread.start();
+                //CornLifeCycleThread cornLifeCycleThread = new CornLifeCycleThread(corn);
+                //cornLifeCycleThread.start();
             }
         }
     }
