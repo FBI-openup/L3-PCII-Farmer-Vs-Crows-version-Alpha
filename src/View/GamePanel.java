@@ -1,9 +1,16 @@
 package View;
 
+import Controller.FarmerMouseListener;
 import Model.*;
+import View.*;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+
 
 public class GamePanel extends JPanel {
 
@@ -16,106 +23,141 @@ public class GamePanel extends JPanel {
     private final int maxScreenRow = 12; // 12 tiles tall
     private final int screenWidth = tileSize * maxScreenCol; // 768 pixels wide
     private final int screenHeight = tileSize * maxScreenRow; // 576 pixels tall
+    private BufferedImage farmerImage;
+    private BufferedImage crowImage;
+    private BufferedImage cornSeedImage;
+    private BufferedImage cornGrowingImage;
+    private BufferedImage cornMatureImage;
+    private BufferedImage cornWitheredImage;
+    private BufferedImage scarecrowImage;
+    private BufferedImage sellingCenterImage;
+    private BufferedImage seedConversionCenterImage;
+    private BufferedImage backgroundImage;
 
     private final GameEngine gameEngine;
 
     // CONSTRUCTOR
     public GamePanel(GameEngine gameEngine) {
+
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(new Color(0, 100, 0));
-        this.setDoubleBuffered(true);
         this.gameEngine = gameEngine;
+        this.setLayout(new BorderLayout());
+        /*backgroundPanel = new BackgroundPanel("images/map.png");
+        this.add(backgroundPanel, BorderLayout.CENTER);*/
+        this.setDoubleBuffered(true);
+
+        try {
+            backgroundImage = ImageIO.read(new File("images/map.png"));
+            farmerImage = ImageIO.read(new File("images/farmer.png").getAbsoluteFile());
+            crowImage = ImageIO.read(new File("images/crow.png").getAbsoluteFile());
+            cornSeedImage = ImageIO.read(new File("images/cornSeed.png").getAbsoluteFile());
+            cornGrowingImage = ImageIO.read(new File("images/cornGrowing.png").getAbsoluteFile());
+            cornMatureImage = ImageIO.read(new File("images/cornMature.png").getAbsoluteFile());
+            cornWitheredImage = ImageIO.read(new File("images/cornWithered.png").getAbsoluteFile());
+            scarecrowImage = ImageIO.read(new File("images/scarecrow.png").getAbsoluteFile());
+            sellingCenterImage = ImageIO.read(new File("images/cornmarket.png").getAbsoluteFile());
+            seedConversionCenterImage = ImageIO.read(new File("images/cornseedcenter.png").getAbsoluteFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                backgroundImage = Toolkit.getDefaultToolkit().getImage(imagePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     // DRAW
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+
         Graphics2D g2d = (Graphics2D) g;
 
-        for (Units unit : gameEngine.getUnits()) {
-            if (unit instanceof Farmer) {
-                g2d.setColor(Color.BLUE); // Set color for Farmer
-            } else if (unit instanceof Crow) {
-                g2d.setColor(Color.BLACK); // Set color for Crow
-                // Draw a circle representing the safety distance of the crow centered at the crow's position
-                g2d.drawOval(unit.getPosition().x - ((Crow) unit).getSafetyDistance() / 2, unit.getPosition().y - ((Crow) unit).getSafetyDistance() / 2, ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance());
-            } else if (unit instanceof Corn) {
-                g2d.setColor(Color.YELLOW); // Set color for Corn
-            } else if (unit instanceof Scarecrow) {
-                g2d.setColor(Color.GRAY); // Set color for Scarecrow
-            }
-            Point position = unit.getPosition();
-            g2d.fillRect(position.x, position.y, tileSize, tileSize);
-        }
-        g2d.dispose();
-    }
-}
-
-/*
-To replace the filled rectangle with an image, you need to load the image and then draw it in the `paintComponent` method. You can use the `ImageIO.read` method to load the image and the `Graphics2D.drawImage` method to draw it.
-
-Here's how you can modify the `paintComponent` method in your `GamePanel` class:
-
-```java
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
-
-// ...
-
-public class GamePanel extends JPanel {
-    // ...
-
-    private BufferedImage farmerImage;
-    private BufferedImage crowImage;
-    private BufferedImage cornImage;
-    private BufferedImage scarecrowImage;
-
-    public GamePanel() {
-        // ...
-
-        try {
-            farmerImage = ImageIO.read(getClass().getResource("/path/to/farmer/image.png"));
-            crowImage = ImageIO.read(getClass().getResource("/path/to/crow/image.png"));
-            cornImage = ImageIO.read(getClass().getResource("/path/to/corn/image.png"));
-            scarecrowImage = ImageIO.read(getClass().getResource("/path/to/scarecrow/image.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-
-        for (Units unit : gameEngine.getUnits()) {
+        //for (Units unit : gameEngine.getUnits()) { /// ISSUE : THREAD SAFETY
+        for (int i = 0; i < gameEngine.getUnits().size(); i++) {
+            Units unit = gameEngine.getUnits().get(i);
             BufferedImage currentImage = null;
+            Point position = unit.getPosition();
+            // Draw the farmer
             if (unit instanceof Farmer) {
                 currentImage = farmerImage;
-            } else if (unit instanceof Crow) {
-                currentImage = crowImage;
-            } else if (unit instanceof Corn) {
-                currentImage = cornImage;
-            } else if (unit instanceof Scarecrow) {
-                currentImage = scarecrowImage;
+                FarmerMouseListener farmerMouseListener = new FarmerMouseListener(gameEngine);
+                this.addMouseListener(farmerMouseListener);
+                g.setColor(((Farmer) unit).isSelected() ? Color.BLUE : Color.RED);
+                g.fillOval(position.x - 48, position.y - 48, tileSize * 2, tileSize * 2);
+                g.setColor(Color.BLACK);
+                g.drawOval(position.x- ((Farmer) unit).getScareRange()/2, position.y- ((Farmer) unit).getScareRange()/2, ((Farmer) unit).getScareRange(), ((Farmer) unit).getScareRange()); // represent the farmer as a circle
+                // Draw a line from the farmer to the destination
+                if (((Farmer) unit).getDestination() != null) {
+                    g2d.setColor(Color.BLACK);
+                    g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{5.0f}, 0.0f));
+                    g2d.drawLine(position.x, position.y, ((Farmer) unit).getDestination().x, ((Farmer) unit).getDestination().y);
+                }
+                g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
             }
-
-            if (currentImage != null) {
-                Point position = unit.getPosition();
-                g2d.drawImage(currentImage, position.x, position.y, tileSize, tileSize, null);
+            // Draw the crow
+            else if (unit instanceof Crow) {
+                currentImage = crowImage;
+                g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
+                // Draw a circle representing the safety distance of the crow centered at the crow's position
+                g2d.setColor(Color.BLACK);
+                g2d.drawOval(position.x - ((Crow) unit).getSafetyDistance() / 2, position.y - ((Crow) unit).getSafetyDistance() / 2, ((Crow) unit).getSafetyDistance(), ((Crow) unit).getSafetyDistance());
+            }
+            // Draw the corn
+            else if (unit instanceof Corn) {
+                switch (((Corn) unit).getLifeCycle()) {
+                    case SEED:
+                        currentImage = cornSeedImage;
+                        break;
+                    case GROWING:
+                        currentImage = cornGrowingImage;
+                        break;
+                    case MATURE:
+                        currentImage = cornMatureImage;
+                        break;
+                    case WITHERED:
+                        currentImage = cornWitheredImage;
+                        break;
+                }
+                g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
+            }
+            // Draw the scarecrow
+            else if (unit instanceof Scarecrow) {
+                currentImage = scarecrowImage;
+                if (((Scarecrow) unit).isTaken()) {
+                    g2d.drawImage(currentImage, position.x - 36 - tileSize / 2, position.y - 36 - tileSize / 2, (int) (tileSize * 1.5), (int) (tileSize * 1.5), null);
+                }
+                else {
+                    g2d.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
+                    // Draw a circle representing the safety distance of the scarecrow centered at the scarecrow's position
+                    g.setColor(Color.BLACK);
+                    g.drawOval(position.x - ((Scarecrow) unit).getEfficiencyRange() / 2, position.y - ((Scarecrow) unit).getEfficiencyRange() / 2, ((Scarecrow) unit).getEfficiencyRange(), ((Scarecrow) unit).getEfficiencyRange());
+                }
+            }
+            // Draw the market
+            else if (unit instanceof SellingCenter) {
+                currentImage = sellingCenterImage;
+                g.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
+            }
+            // Draw the seed conversion center
+            else if (unit instanceof SeedConversionCenter) {
+                currentImage = seedConversionCenterImage;
+                g.drawImage(currentImage, position.x - 48, position.y - 48, tileSize * 2, tileSize * 2, null);
             }
         }
-
         g2d.dispose();
     }
 }
-```
-
-In this code, we first load the images for each type of unit in the `GamePanel` constructor. Then, in the `paintComponent` method, we select the appropriate image for each unit and draw it at the unit's position. The images are scaled to the size of a tile.
-
-Please replace `"/path/to/farmer/image.png"` (and the other paths) with the actual paths to your images. The paths are relative to the project's root directory. If the images are not found, an `IOException` will be thrown.
- */
-
-

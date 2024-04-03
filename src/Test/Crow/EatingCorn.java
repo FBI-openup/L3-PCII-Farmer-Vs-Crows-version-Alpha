@@ -17,7 +17,7 @@ public class EatingCorn {
         GameEngine gameEngine = new GameEngine();
 
         // Create units and add them to the game engine
-        Farmer farmer = new Farmer(new Point(0, 0), gameEngine);
+        Farmer farmer = new Farmer(gameEngine);
         gameEngine.addUnit(farmer);
 
         Crow crow = new Crow(new Point(300, 300), gameEngine);
@@ -40,7 +40,7 @@ public class EatingCorn {
 
         GamePanel gamePanel = new GamePanel(gameEngine);
         window.add(gamePanel);
-        CrowMovement gameThread = new CrowMovement(gamePanel, gameEngine);
+        CrowMovementThread gameThread = new CrowMovementThread(gamePanel, gameEngine);
         gameThread.start();
 
         window.pack();
