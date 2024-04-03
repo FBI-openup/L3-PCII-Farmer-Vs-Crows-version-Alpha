@@ -2,6 +2,10 @@ package Model;
 
 public class CornLifeCycleThread extends Thread {
     private final Corn corn;
+    private final float borderGrowing = 0.25f;
+    private final float borderMature = 0.75f;
+    private final float borderWithered = 1.0f;
+
 
     public CornLifeCycleThread(Corn corn) {
         this.corn = corn;
@@ -15,11 +19,11 @@ public class CornLifeCycleThread extends Thread {
                 corn.setProgress(corn.getProgress() + 0.01f); // Increase progress by 10% every 10 second
                 System.out.println("Progress: " + corn.getProgress());
                 // Update the life cycle state based on the progress
-                if (corn.getProgress() > 0.33f && corn.getProgress() <= 0.66f) {
+                if (corn.getProgress() > borderGrowing && corn.getProgress() <= borderMature) {
                     corn.setLifeCycle(Corn.LifeCycle.GROWING);
-                } else if (corn.getProgress() > 0.66f && corn.getProgress() <= 1.0f) {
+                } else if (corn.getProgress() > borderMature && corn.getProgress() <= borderWithered) {
                     corn.setLifeCycle(Corn.LifeCycle.MATURE);
-                } else if (corn.getProgress() > 1.0f) {
+                } else if (corn.getProgress() > borderWithered) {
                     corn.setLifeCycle(Corn.LifeCycle.WITHERED);
                 }
 

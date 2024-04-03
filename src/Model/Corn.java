@@ -5,13 +5,25 @@ import View.CornStateView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /*
     * Corn class
 */
 public class Corn extends Units {
+    private final Color seedColor = new Color(0, 0, 0);
+    private final Color startColor = new Color(0, 128, 0);
+    private final Color midColor = new Color(255, 255, 0);
+    private final Color endColor = new Color(139, 69, 19);
+    private boolean isTaken = false;
+    private final float borderGrowing = 0.25f;
+    private final float borderMature = 0.75f;
 
-    public static enum LifeCycle {
+    private Color currentColor;
+
+    public enum LifeCycle {
         SEED,
         GROWING,
         MATURE,
@@ -20,14 +32,45 @@ public class Corn extends Units {
     private LifeCycle lifeCycle = LifeCycle.SEED;
     private CornLifeCycleThread cornLifeCycleThread = new CornLifeCycleThread(this);
     private float progress = 0.0f;
-    private int revenue = 0;
-    private boolean isTaken = false;
 
     public Corn(Point position, GameEngine gameEngine) {
         super(position, gameEngine);
         cornLifeCycleThread.start();
+        startGrowingColor();
     }
 
+    private void startGrowingColor() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            if (progress <= 0.25F) {
+                this.currentColor = this.interpolateColor(this.seedColor, this.startColor, progress*4);
+            } else if (progress < 0.75F) {
+                this.currentColor = this.interpolateColor(this.startColor, this.midColor, (progress - 0.25F)*2);
+            } else if (progress < 1F) {
+                this.currentColor = this.interpolateColor(this.midColor, this.endColor, (progress - 0.75F)*4);
+            } else {
+                this.currentColor = this.endColor;
+                scheduler.shutdown();
+            }
+            System.out.println(STR."Current Color: \{this.currentColor}");
+        }, 0L, 1L, TimeUnit.SECONDS);
+    }
+
+    private Color interpolateColor(Color start, Color end, float fraction) {
+        int r = (int)((float)start.getRed() + (float)(end.getRed() - start.getRed()) * fraction);
+        int g = (int)((float)start.getGreen() + (float)(end.getGreen() - start.getGreen()) * fraction);
+        int b = (int)((float)start.getBlue() + (float)(end.getBlue() - start.getBlue()) * fraction);
+        return new Color(r, g, b);
+    }
+
+    public Color getCurrentColor() {
+        return this.currentColor;
+    }
+
+
+    public void setTaken(boolean taken) {
+        this.isTaken = taken;
+    }
     public LifeCycle getLifeCycle() {
         return lifeCycle;
     }
@@ -43,21 +86,7 @@ public class Corn extends Units {
         this.progress = progress;
     }
 
-    public int getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(int revenue) {
-        this.revenue = revenue;
-    }
     public CornLifeCycleThread getCornLifeCycleThread() {
         return cornLifeCycleThread;
-    }
-    public boolean isTaken() {
-        return isTaken;
-    }
-
-    public void setTaken(boolean taken) {
-        isTaken = taken;
     }
 }

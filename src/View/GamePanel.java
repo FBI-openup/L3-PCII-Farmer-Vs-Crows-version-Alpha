@@ -132,6 +132,8 @@ public class GamePanel extends JPanel {
                         currentImage = cornWitheredImage;
                         break;
                 }
+                g2d.setColor(((Corn)unit).getCurrentColor());
+                g2d.fillOval(position.x - 24, position.y - 24, 48, 48);
                 g2d.drawImage(currentImage, position.x - 24, position.y - 24, tileSize, tileSize, null);
             }
             // Draw the scarecrow
